@@ -2211,7 +2211,7 @@ void NSPanelLovelace::call_ha_service_(
     const std::map<std::string, std::string> &data,
     const std::map<std::string, std::string> &data_template) {
   api::HomeassistantServiceResponse resp;
-  resp.service = service;
+  resp.set_service = service;
 
   auto it = data.find(to_string(ha_attr_type::entity_id));
   if (it == data.end())
