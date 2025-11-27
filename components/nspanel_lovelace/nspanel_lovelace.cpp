@@ -2299,7 +2299,13 @@ void NSPanelLovelace::call_ha_service_(
   
 
   #endif
+  
+  char buf[24]; // just big enough
+  sprintf(buf."%u",resp.data.size());
+  std::string s = buf;
 
+
+  ESP_LOGVV(TAG, "ActionRequest data size before: %s", s);
   for (auto &it : data) {
     api::HomeassistantServiceMap kv;
     #if ESPHOME_VERSION_CODE >= VERSION_CODE(2025,8,0)
@@ -2309,7 +2315,12 @@ void NSPanelLovelace::call_ha_service_(
     #endif
     kv.value = it.second;
     resp.data.push_back(kv);
-    ESP_LOGVV(TAG, "ActionRequest data size: %s", std::to_string((int)resp.data.size()));
+   
+    char buf[24]; // just big enough
+    sprintf(buf."%u",resp.data.size());
+    std::string s = buf;
+
+    ESP_LOGVV(TAG, "ActionRequest data size: %s", s);
   }
   for (auto &it : data_template) {
     api::HomeassistantServiceMap kv;
