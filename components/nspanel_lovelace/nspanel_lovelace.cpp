@@ -2301,7 +2301,7 @@ void NSPanelLovelace::call_ha_service_(
   #endif
   
   char buf[24]; // just big enough
-  sprintf(buf."%u",resp.data.size());
+  sprintf(buf, "%u",resp.data.size());
   std::string s = buf;
 
 
@@ -2317,7 +2317,7 @@ void NSPanelLovelace::call_ha_service_(
     resp.data.push_back(kv);
    
     char buf[24]; // just big enough
-    sprintf(buf."%u",resp.data.size());
+    sprintf(buf, "%u",resp.data.size());
     std::string s = buf;
 
     ESP_LOGVV(TAG, "ActionRequest data size: %s", s);
