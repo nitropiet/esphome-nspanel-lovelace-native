@@ -2312,7 +2312,7 @@ void NSPanelLovelace::call_ha_service_(
   }
 
   for (auto &kv : resp.data) {
-    ESP_LOGVV(TAG, "Loaded Data Params: %s -> %s", kv.key.c_str(), kv.value.c_str());
+    ESP_LOGVV(TAG, "Loaded Data Params: %s -> %s", kv.key_ref_.c_str(), kv.value.c_str());
   }
 
 
