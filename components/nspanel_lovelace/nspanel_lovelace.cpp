@@ -2291,7 +2291,10 @@ void NSPanelLovelace::call_ha_service_(
       ESP_LOGD(TAG, "Call HA: %s", service.c_str());
 
     for (auto &it : data) {
-      ESP_LOGVV(TAG, "Params: %s -> %s", it.first.c_str(), it.second.c_str());
+      ESP_LOGVV(TAG, "Data Params: %s -> %s", it.first.c_str(), it.second.c_str());
+    }
+    for (auto &it : data_template) {
+      ESP_LOGVV(TAG, "Data Template Params: %s -> %s", it.first.c_str(), it.second.c_str());
     }
   
 
