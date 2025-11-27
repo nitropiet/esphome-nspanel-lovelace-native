@@ -2309,6 +2309,7 @@ void NSPanelLovelace::call_ha_service_(
     #endif
     kv.value = it.second;
     resp.data.push_back(kv);
+    ESP_LOGVV(TAG, "ActionRequest data size: %s", std::to_string((int)resp.data.size()));
   }
   for (auto &it : data_template) {
     api::HomeassistantServiceMap kv;
