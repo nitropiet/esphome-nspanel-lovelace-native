@@ -116,7 +116,7 @@ void NSPanelLovelace::setup() {
   if (!this->weather_entity_id_.empty()) {
     // state provides the information for the icon
     this->subscribe_homeassistant_state(
-        &NSPanelLovelace::on_weather_state_update_, esphome::ProgmemStringRef(this->weather_entity_id_));
+        &NSPanelLovelace::on_weather_state_update_, esphome::ProgmemStringRef(esphome::StringRef(this->weather_entity_id_));
     this->subscribe_homeassistant_state(
         &NSPanelLovelace::on_weather_temperature_update_,
         esphome::ProgmemStringRef(this->weather_entity_id_), esphome::ProgmemStringRef(to_string(ha_attr_type::temperature)));
