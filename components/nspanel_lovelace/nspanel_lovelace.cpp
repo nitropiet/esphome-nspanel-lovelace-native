@@ -2334,7 +2334,9 @@ void NSPanelLovelace::call_ha_service_(
 #endif
   for (auto &it : data_template) {
     api::HomeassistantServiceMap kv;
-#if ESPHOME_VERSION_CODE >= VERSION_CODE(2026,1,0)
+#if ESPHOME_VERSION_CODE >= VERSION_CODE(2026,11,0)
+  kv.key = esphome::ProgmemStringRef(esphome::StringRef(it.first));
+#elif ESPHOME_VERSION_CODE >= VERSION_CODE(2026,1,0)
     kv.key = esphome::StringRef(it.first);
 #elif ESPHOME_VERSION_CODE >= VERSION_CODE(2025,8,0)
     kv.set_key(esphome::StringRef(it.first));
@@ -2503,7 +2505,7 @@ void NSPanelLovelace::on_weather_temperature_unit_update_(
 void NSPanelLovelace::set_weather_forecast_data(std::string forecast_json) {
   this->on_weather_forecast_update_(this->weather_entity_id_,
 # if ESPHOME_VERSION_CODE >= VERSION_CODE(2026,11,0)
-    esphome::ProgmemStringRef(esphome::StringRef(forecast_json));
+    esphome::ProgmemStringRef(esphome::StringRef(forecast_json))
 # elif ESPHOME_VERSION_CODE >= VERSION_CODE(2026,1,0)
     esphome::StringRef(forecast_json)
 # else
@@ -2516,7 +2518,7 @@ void NSPanelLovelace::set_weather_forecast_data(std::string forecast_json) {
 
 void NSPanelLovelace::on_weather_forecast_update_(
 #if ESPHOME_VERSION_CODE >= VERSION_CODE(2026,11,0)
-    const std::string &entity_id, esphome::ProgmemStringRef(esphome::StringRef) forecast_json;
+    const std::string &entity_id, esphome::ProgmemStringRef(esphome::StringRef) forecast_json
 #elif ESPHOME_VERSION_CODE >= VERSION_CODE(2026,1,0)
     const std::string &entity_id, esphome::StringRef forecast_json
 #else
