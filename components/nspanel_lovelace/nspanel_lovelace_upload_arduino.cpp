@@ -236,7 +236,7 @@ bool NSPanelLovelace::upload_tft(const std::string &url) {
   this->recv_ret_string_(response, 2000, true);  // This can take some time to return
 
   // The Nextion display will, if it's ready to accept data, send a 0x05 byte.
-  constexpr size_t MAX_LOG_BYTES1 = 64;
+  constexpr size_t MAX_LOG_BYTES = 64;
   char hex[format_hex_pretty_size(MAX_LOG_BYTES)];   // 3 * 64 = 192 chars
   ESP_LOGD(TAG, "Upgrade response is [%s]",
             format_hex_pretty_to(hex, reinterpret_cast<const uint8_t *>(response.data()),

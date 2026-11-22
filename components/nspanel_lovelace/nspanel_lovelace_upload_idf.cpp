@@ -151,8 +151,13 @@ int NSPanelLovelace::upload_by_chunks_(esp_http_client_handle_t http_client, uin
 #endif
       this->upload_first_chunk_sent_ = true;
       if (recv_string[0] == 0x08 && recv_string.size() == 5) {  // handle partial upload request
+        constexpr size_t MAX_LOG_BYTES = 64;
+        char hex[format_hex_pretty_size(MAX_LOG_BYTES)];   // 3 * 64 = 192 chars
         ESP_LOGD(TAG, "recv_string [%s]",
-                 format_hex_pretty(reinterpret_cast<const uint8_t *>(recv_string.data()), recv_string.size()).c_str());
+                 format_hex_pretty_to(hex, reinterpret_cast<const uint8_t *>(recv_string.data()),
+                 std::min(recv_string.size(), MAX_LOG_BYTES), '.'));  
+        //ESP_LOGD(TAG, "recv_string [%s]",
+        //         format_hex_pretty(reinterpret_cast<const uint8_t *>(recv_string.data()), recv_string.size()).c_str());
         uint32_t result = 0;
         for (int j = 0; j < 4; ++j) {
           result += static_cast<uint8_t>(recv_string[j + 1]) << (8 * j);
@@ -177,8 +182,13 @@ int NSPanelLovelace::upload_by_chunks_(esp_http_client_handle_t http_client, uin
         buffer = nullptr;
         return range_end + 1;
       } else if (recv_string[0] != 0x05 && recv_string[0] != 0x08) {  // 0x05 == "ok"
+        constexpr size_t MAX_LOG_BYTES = 64;
+        char hex[format_hex_pretty_size(MAX_LOG_BYTES)];   // 3 * 64 = 192 chars
         ESP_LOGE(TAG, "Invalid response from Nextion: [%s]",
-                 format_hex_pretty(reinterpret_cast<const uint8_t *>(recv_string.data()), recv_string.size()).c_str());
+                  format_hex_pretty_to(hex, reinterpret_cast<const uint8_t *>(recv_string.data()),
+                  std::min(recv_string.size(), MAX_LOG_BYTES), '.'));  
+        //ESP_LOGE(TAG, "Invalid response from Nextion: [%s]",
+        //         format_hex_pretty(reinterpret_cast<const uint8_t *>(recv_string.data()), recv_string.size()).c_str());
         // Deallocate buffer
         allocator.deallocate(buffer, 4096);
         buffer = nullptr;
@@ -249,10 +259,15 @@ bool NSPanelLovelace::upload_tft(const std::string &url /*, uint32_t baud_rate*/
         this->send_nextion_command_(""); // initial empty command recommended by nextion
         break;
       }
-      ESP_LOGD(TAG, "TFT response: '%s'",
-        format_hex_pretty(
-          reinterpret_cast<const uint8_t *>(recv_res.data()),
-          recv_res.size()).c_str());
+      constexpr size_t MAX_LOG_BYTES = 64;
+      char hex[format_hex_pretty_size(MAX_LOG_BYTES)];   // 3 * 64 = 192 chars
+      ESP_LOGD(TAG, "TFT response: [%s]",
+                format_hex_pretty_to(hex, reinterpret_cast<const uint8_t *>(recv_res.data()),
+                std::min(recv_res.size(), MAX_LOG_BYTES), '.'));  
+      //ESP_LOGD(TAG, "TFT response: '%s'",
+      //  format_hex_pretty(
+      //    reinterpret_cast<const uint8_t *>(recv_res.data()),
+      //    recv_res.size()).c_str());
       recv_res.clear();
       vTaskDelay(pdMS_TO_TICKS((1000000 / baudrates[i]) + 30));  // NOLINT
     }
@@ -370,9 +385,14 @@ bool NSPanelLovelace::upload_tft(const std::string &url /*, uint32_t baud_rate*/
   this->recv_ret_string_(recv_res, 5000, true);  // This can take some time to return
 
   // The Nextion display will, if it's ready to accept data, send a 0x05 byte.
+  constexpr size_t MAX_LOG_BYTES = 64;
+  char hex[format_hex_pretty_size(MAX_LOG_BYTES)];   // 3 * 64 = 192 chars
   ESP_LOGD(TAG, "Upgrade response is [%s] - %zu byte(s)",
-           format_hex_pretty(reinterpret_cast<const uint8_t *>(recv_res.data()), recv_res.size()).c_str(),
-           recv_res.length());
+            format_hex_pretty_to(hex, reinterpret_cast<const uint8_t *>(recv_res.data()),
+            std::min(recv_res.size(), MAX_LOG_BYTES), '.'), recv_res.length());  
+  //ESP_LOGD(TAG, "Upgrade response is [%s] - %zu byte(s)",
+  //         format_hex_pretty(reinterpret_cast<const uint8_t *>(recv_res.data()), recv_res.size()).c_str(),
+  //         recv_res.length());
   ESP_LOGD(TAG, "Free heap: %" PRIu32, esp_get_free_heap_size());
 
   if (recv_res.find(0x05) != std::string::npos) {
