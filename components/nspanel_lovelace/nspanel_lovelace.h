@@ -189,10 +189,11 @@ protected:
   void send_nextion_command_(const std::string &command);
 
   void subscribe_homeassistant_state_attr(
-#if ESPHOME_VERSION_CODE >= VERSION_CODE(2026,1,0)
+#if ESPHOME_VERSION_CODE >= VERSION_CODE(2026,11,0)
+    void (NSPanelLovelace::*callback)(const std::string &, const std::string &, esphome::ProgmemStringRef),
+#elif ESPHOME_VERSION_CODE >= VERSION_CODE(2026,1,0)
     void (NSPanelLovelace::*callback)(const std::string &, const std::string &, esphome::StringRef),
-#else
-    void (NSPanelLovelace::*callback)(std::string, std::string, std::string),
+#else    void (NSPanelLovelace::*callback)(std::string, std::string, std::string),
 #endif
     const std::string &entity_id, const std::string &attr_name
   ) {
@@ -259,7 +260,16 @@ protected:
     const std::string& service,
     const std::map<std::string, std::string> &data,
     const std::map<std::string, std::string> &data_template = {});
-#if ESPHOME_VERSION_CODE >= VERSION_CODE(2026,1,0)
+#if ESPHOME_VERSION_CODE >= VERSION_CODE(2026,11,0)
+  void on_entity_state_update_(const std::string &entity_id, esphome::ProgmemStringRef state);
+  void on_entity_attribute_update_(
+    const std::string &entity_id, const std::string &attr_name, esphome::ProgmemStringRef attr_value);
+
+  void on_weather_state_update_(const std::string &entity_id, esphome::ProgmemStringRef state);
+  void on_weather_temperature_update_(const std::string &entity_id, esphome::ProgmemStringRef temperature);
+  void on_weather_temperature_unit_update_(const std::string &entity_id, esphome::ProgmemStringRef temperature_unit);
+  void on_weather_forecast_update_(const std::string &entity_id, esphome::ProgmemStringRef forecast_json);
+#elif ESPHOME_VERSION_CODE >= VERSION_CODE(2026,1,0)
   void on_entity_state_update_(const std::string &entity_id, esphome::StringRef state);
   void on_entity_attribute_update_(
     const std::string &entity_id, const std::string &attr_name, esphome::StringRef attr_value);

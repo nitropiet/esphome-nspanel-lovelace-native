@@ -2362,7 +2362,9 @@ void NSPanelLovelace::call_ha_service_(
 }
 
 void NSPanelLovelace::on_entity_state_update_(
-#if ESPHOME_VERSION_CODE >= VERSION_CODE(2026,1,0)
+#if ESPHOME_VERSION_CODE >= VERSION_CODE(2026,11,0)
+    const std::string &entity_id, esphome::ProgmemStringRef state
+#elif ESPHOME_VERSION_CODE >= VERSION_CODE(2026,1,0)
     const std::string &entity_id, esphome::StringRef state
 #else
     std::string entity_id, std::string state
@@ -2372,7 +2374,9 @@ void NSPanelLovelace::on_entity_state_update_(
 }
 
 void NSPanelLovelace::on_entity_attribute_update_(
-#if ESPHOME_VERSION_CODE >= VERSION_CODE(2026,1,0)
+#if ESPHOME_VERSION_CODE >= VERSION_CODE(2026,11,0)
+    const std::string &entity_id, const std::string &attr_name, esphome::ProgmemStringRef attr_value
+#elif ESPHOME_VERSION_CODE >= VERSION_CODE(2026,1,0)
     const std::string &entity_id, const std::string &attr_name, esphome::StringRef attr_value
 #else
     std::string entity_id, std::string attr_name, std::string attr_value
@@ -2461,7 +2465,9 @@ void NSPanelLovelace::send_weather_update_command_() {
 }
 
 void NSPanelLovelace::on_weather_state_update_(
-#if ESPHOME_VERSION_CODE >= VERSION_CODE(2026,1,0)
+#if ESPHOME_VERSION_CODE >= VERSION_CODE(2026,11,0)
+    const std::string &entity_id, esphome::ProgmemStringRef state
+#elif ESPHOME_VERSION_CODE >= VERSION_CODE(2026,1,0)
     const std::string &entity_id, esphome::StringRef state
 #else
     std::string entity_id, std::string state
@@ -2475,7 +2481,9 @@ void NSPanelLovelace::on_weather_state_update_(
 }
 
 void NSPanelLovelace::on_weather_temperature_update_(
-#if ESPHOME_VERSION_CODE >= VERSION_CODE(2026,1,0)
+#if ESPHOME_VERSION_CODE >= VERSION_CODE(2026,11,0)
+    const std::string &entity_id, esphome::ProgmemStringRef temperature
+#elif ESPHOME_VERSION_CODE >= VERSION_CODE(2026,1,0)
     const std::string &entity_id, esphome::StringRef temperature
 #else
     std::string entity_id, std::string temperature
@@ -2489,7 +2497,9 @@ void NSPanelLovelace::on_weather_temperature_update_(
 }
 
 void NSPanelLovelace::on_weather_temperature_unit_update_(
-#if ESPHOME_VERSION_CODE >= VERSION_CODE(2026,1,0)
+#if ESPHOME_VERSION_CODE >= VERSION_CODE(2026,11,0)
+    const std::string &entity_id, esphome::ProgmemStringRef temperature_unit
+#elif ESPHOME_VERSION_CODE >= VERSION_CODE(2026,1,0)
     const std::string &entity_id, esphome::StringRef temperature_unit
 #else
     std::string entity_id, std::string temperature_unit
