@@ -2518,7 +2518,7 @@ void NSPanelLovelace::set_weather_forecast_data(std::string forecast_json) {
 
 void NSPanelLovelace::on_weather_forecast_update_(
 #if ESPHOME_VERSION_CODE >= VERSION_CODE(2026,11,0)
-    const std::string &entity_id, esphome::ProgmemStringRef(esphome::StringRef) forecast_json
+    const std::string &entity_id, esphome::ProgmemStringRef forecast_json
 #elif ESPHOME_VERSION_CODE >= VERSION_CODE(2026,1,0)
     const std::string &entity_id, esphome::StringRef forecast_json
 #else
