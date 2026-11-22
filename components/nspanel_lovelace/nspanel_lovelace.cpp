@@ -2499,7 +2499,7 @@ void NSPanelLovelace::on_weather_temperature_update_(
 void NSPanelLovelace::on_weather_temperature_unit_update_(
 #if ESPHOME_VERSION_CODE >= VERSION_CODE(2026,11,0)
     const std::string &entity_id, esphome::ProgmemStringRef temperature_unit
-#elif ESPHOME_VERSION_CODE >= VERSION_CODE(2026,1,0)
+#if ESPHOME_VERSION_CODE >= VERSION_CODE(2026,1,0)
     const std::string &entity_id, esphome::StringRef temperature_unit
 #else
     std::string entity_id, std::string temperature_unit
@@ -2516,7 +2516,7 @@ void NSPanelLovelace::set_weather_forecast_data(std::string forecast_json) {
   this->on_weather_forecast_update_(this->weather_entity_id_,
 # if ESPHOME_VERSION_CODE >= VERSION_CODE(2026,11,0)
     esphome::ProgmemStringRef(esphome::StringRef(forecast_json))
-# elif ESPHOME_VERSION_CODE >= VERSION_CODE(2026,1,0)
+# if ESPHOME_VERSION_CODE >= VERSION_CODE(2026,1,0)
     esphome::StringRef(forecast_json)
 # else
     forecast_json
