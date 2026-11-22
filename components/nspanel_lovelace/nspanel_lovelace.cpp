@@ -119,7 +119,7 @@ void NSPanelLovelace::setup() {
         &NSPanelLovelace::on_weather_state_update_, this->weather_entity_id_);
     this->subscribe_homeassistant_state(
         &NSPanelLovelace::on_weather_temperature_update_,
-        esphome::ProgmemStringRef(this->weather_entity_id_), esphome::ProgmemStringRef(to_string(ha_attr_type::temperature)));
+        this->weather_entity_id_, to_string(ha_attr_type::temperature));
     this->subscribe_homeassistant_state(
         &NSPanelLovelace::on_weather_temperature_unit_update_,
         this->weather_entity_id_, to_string(ha_attr_type::temperature_unit));
