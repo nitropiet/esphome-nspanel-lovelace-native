@@ -107,8 +107,13 @@ int NSPanelLovelace::upload_by_chunks_(HTTPClient *http, const std::string &url,
 
     this->recv_ret_string_(recv_string, 5000, true);
     if (recv_string[0] != 0x05) { // 0x05 == "ok"
+      constexpr size_t MAX_LOG_BYTES = 64;
+      char hex[format_hex_pretty_size(MAX_LOG_BYTES)];   // 3 * 64 = 192 chars
       ESP_LOGD(TAG, "recv_string [%s]",
-               format_hex_pretty(reinterpret_cast<const uint8_t *>(recv_string.data()), recv_string.size()).c_str());
+               format_hex_pretty_to(hex, reinterpret_cast<const uint8_t *>(recv_string.data()),
+               std::min(recv_string.size(), MAX_LOG_BYTES), '.'));  
+    //  ESP_LOGD(TAG, "recv_string [%s]",
+    //           format_hex_pretty(reinterpret_cast<const uint8_t *>(recv_string.data()), recv_string.size()).c_str());
     }
 
     // handle partial upload request
@@ -231,8 +236,13 @@ bool NSPanelLovelace::upload_tft(const std::string &url) {
   this->recv_ret_string_(response, 2000, true);  // This can take some time to return
 
   // The Nextion display will, if it's ready to accept data, send a 0x05 byte.
+  constexpr size_t MAX_LOG_BYTES1 = 64;
+  char hex[format_hex_pretty_size(MAX_LOG_BYTES)];   // 3 * 64 = 192 chars
   ESP_LOGD(TAG, "Upgrade response is [%s]",
-           format_hex_pretty(reinterpret_cast<const uint8_t *>(response.data()), response.size()).c_str());
+            format_hex_pretty_to(hex, reinterpret_cast<const uint8_t *>(response.data()),
+            std::min(response.size(), MAX_LOG_BYTES), '.'));  
+  //ESP_LOGD(TAG, "Upgrade response is [%s]",
+  //         format_hex_pretty(reinterpret_cast<const uint8_t *>(response.data()), response.size()).c_str());
 
   if (response.find(0x05) != std::string::npos) {
     ESP_LOGD(TAG, "preparation for tft update done");

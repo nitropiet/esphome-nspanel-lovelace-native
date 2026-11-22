@@ -15,6 +15,7 @@
 // #include <regex>
 #include "esphome/core/application.h"
 #include "esphome/core/helpers.h"
+#include "esphome/core/alloc_helpers.h"
 #include "esphome/core/util.h"
 #include "esphome/core/version.h"
 #include "esphome/components/json/json_util.h"
@@ -368,7 +369,12 @@ void NSPanelLovelace::loop() {
     this->read_byte(&d);
     this->buffer_.push_back(d);
     if (!this->process_data_()) {
-      ESP_LOGW(TAG, "Unparsed data: %s", esphome::format_hex(this->buffer_).c_str());
+      constexpr size_t MAX_LOG_BYTES = 64;
+      char hex[esphome::format_hex_size(MAX_LOG_BYTES)];   // 2 * 64 + 1 = 129 chars
+      ESP_LOGD(TAG, "Data: %s",
+        esphome::format_hex_to(hex, this->buffer_.data(),
+        std::min(this->buffer_.size(), MAX_LOG_BYTES)));
+      //ESP_LOGW(TAG, "Unparsed data: %s", esphome::format_hex(this->buffer_).c_str());
       this->buffer_.clear();
     }
   }
